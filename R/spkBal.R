@@ -1,6 +1,5 @@
 ## quantification of the imbalance of the spike-in design
-setMethod("spkBal","SpikeInExpressionSet",
-          function(object){
+spkBal <- function(object){
               s <- spkSplit(object)$s
               n <- spikeIn(s)
               e <- exprs(s)
@@ -24,4 +23,4 @@ setMethod("spkBal","SpikeInExpressionSet",
               out <- c(pBal,aBal)
               names(out) <- c("Probe Imbalance", "Array Imbalance")
               return(out)
-          })
+          }

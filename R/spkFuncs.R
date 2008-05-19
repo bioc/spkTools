@@ -1,9 +1,7 @@
 ## wrapper for spikein functions
-setMethod("spkFuncs", "SpikeInExpressionSet",
-          function(object, label, model=expr~spike+probe+array, fc=NULL,
-                   tol=3, compare=NULL, xrngs=NULL, yrngs=NULL, grps=NULL,
-                   cuts=c(.6,.99), potQuantile=.995, xaxis=NULL, pch=".",
-                   output="eps"){
+spkFuncs <- function(object, label, model=expr~spike+probe+array, fc=NULL,
+                   tol=3, xrngs=NULL, yrngs=NULL, cuts=c(.6,.99),
+                   potQuantile=.995, pch=".", output="eps"){
             mypar <- function(a=1,b=1,brewer.n=8,brewer.name="Dark2",...){
               par(mar=c(2.5,2.5,1.6,1.1),mgp=c(1.5,.5,0))
               par(mfrow=c(a,b),...)
@@ -48,7 +46,7 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
               tab1 <- data.frame(NominalConc=2^ss$breaks[1,],
                                  AvgExp=round(ss$avgExp,1),
                                  PropGenesBelow=round(ss$prop,2),
-                                 CROEMStrata=bins,
+                                 ALEStrata=bins,
                                  SD=round(sv,2))
               write.csv(tab1, file=paste("spkT1", olab, ".csv", sep=""),
                         row.names=FALSE)
@@ -58,17 +56,16 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
               if(!is.null(fc) & !is.null(cuts)){
                   cat("Generating fold change plots... ")
                   spkBoxOut <- spkBox(object, spkSlopeOut=ss, fc=fc,
-                                 tol=tol, compare=compare, grps=grps)
+                                 tol=tol)
                   if(output=="eps") postscript(paste("FC", fc, "box", olab,
                        ".eps", sep=""), horizontal=FALSE,
                        encoding="TeXtext.enc", pointsize=15, width=8, height=8)
                   if(output=="pdf") pdf(paste("FC", fc, "box", olab, ".pdf",
                        sep=""), pointsize=15, width=8, height=8)
                   mypar(mar=c(5.2,2.5,2,0.5), cex=1.8)
-                  plot.spkBox(spkBoxOut, label=label, xaxis=xaxis, fc=fc,
-                              xlim=xrngs$v, ylim=yrngs$v)
+                  plotSpkBox(spkBoxOut, fc=fc, xlim=xrngs$v, ylim=yrngs$v, main=label)
                   dev.off()
-                  sbox <- summary.spkBox(spkBoxOut)
+                  sbox <- summarySpkBox(spkBoxOut)
                   cat("Done\n")
                   
               ## Table 2
@@ -100,8 +97,7 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
                        sep=""), pointsize=15, width=8, height=8)
                   mypar(mar=c(5.2,2.5,2,0.5), cex=1.8)
                   spkMA(object, label=label, spkSlopeOut=ss, fc=fc,
-                        tol=tol, compare=compare,
-                        ylim=yrngs$m)
+                        tol=tol, ylim=yrngs$m)
                   dev.off()
                   cat("Done\n")
                 }
@@ -110,17 +106,17 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
               if(!is.null(fc) & is.null(cuts)){
                   cat("Generating fold change plots... ")
                   spkBoxOut <- spkBox(object, spkSlopeOut=ss, fc=fc,
-                                 tol=tol, compare=compare, grps=grps)
+                                 tol=tol)
                   if(output=="eps") postscript(paste("FC", fc, "box", olab,
                        ".eps", sep=""), horizontal=FALSE,
                        encoding="TeXtext.enc", pointsize=15, width=8, height=8)
                   if(output=="pdf") pdf(paste("FC", fc, "box", olab, ".pdf",
                        sep=""), pointsize=15, width=8, height=8)
                   mypar(mar=c(5.2,2.5,2,0.5), cex=1.8)
-                  plot.spkBox(spkBoxOut, label=label, xaxis=xaxis, fc=fc,
-                              xlim=xrngs$v, ylim=yrngs$v)
+                  plot.spkBox(spkBoxOut, fc=fc, xlim=xrngs$v,
+                              ylim=yrngs$v, main=label)
                   dev.off()
-                  sbox <- summary.spkBox(spkBoxOut)
+                  sbox <- summarySpkBox(spkBoxOut)
                   cat("Done\n")
                   
               ## Table 2
@@ -152,8 +148,7 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
                        sep=""), pointsize=15, width=8, height=8)
                   mypar(mar=c(5.2,2.5,2,0.5), cex=1.8)
                   spkMA(object, label=label, spkSlopeOut=ss, fc=fc,
-                        tol=tol, compare=compare,
-                        ylim=yrngs$m, reduce=FALSE)
+                        tol=tol, ylim=yrngs$m, reduce=FALSE)
                   dev.off()
                   cat("Done\n")
                 }
@@ -166,7 +161,7 @@ setMethod("spkFuncs", "SpikeInExpressionSet",
               write.csv(tab3, file=paste("spkT3", olab, ".csv", sep=""),
                         row.names=FALSE)
               cat("Done\n")
-          })
+          }
 
 
 

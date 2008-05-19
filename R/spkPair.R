@@ -1,11 +1,10 @@
 ## compute all pairwise array comparisons for spikein probes
-setMethod("spkPair","SpikeInExpressionSet",
-          function(object,compare=NULL){
+spkPair <- function(object){
             tmp <- spkSplit(object)
             s <- tmp$s
             e <- exprs(s)
             n <- spikeIn(s)
-            ifelse(is.null(compare), p <- permutations(n=ncol(n),r=2), p <- rbind(compare,compare[,2:1]))
+            p <- permutations(n=ncol(n),r=2)
             mafc <- array(dim=c(nrow(n),nrow(p),4),dimnames=c("probes","arraypairs","M,A,N1,N2"))
             for(k in 1:nrow(p)){
               e1 <- e[,p[k,1]]
@@ -18,5 +17,4 @@ setMethod("spkPair","SpikeInExpressionSet",
             rownames(mafc) <- rownames(e)
             return(mafc)
           }
-          )
 

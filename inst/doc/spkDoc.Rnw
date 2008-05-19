@@ -94,8 +94,8 @@ spkDensity(object, spkSlopeOut, cuts=TRUE, label)
 \begin{center}
 <<echo=T,fig=T>>=
 spkBoxOut <- spkBox(object, spkSlopeOut, fc)
-plot.spkBox(spkBoxOut, fc, ylim=c(-1.5,2.5))
-sbox <- summary.spkBox(spkBoxOut)
+plotSpkBox(spkBoxOut, fc, ylim=c(-1.5,2.5))
+sbox <- summarySpkBox(spkBoxOut)
 @
 \end{center} {{\bf Log-ratio distributions}: This plot depicts
   the distribution of observed log ratios for a given nominal fold

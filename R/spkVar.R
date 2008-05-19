@@ -1,6 +1,5 @@
 ## variance of expression at each spikein level
-setMethod("spkVar", "SpikeInExpressionSet",
-          function(object){
+spkVar <- function(object){
               tmp <- spkSplit(object)
               s <- tmp$s
               ns <- tmp$ns
@@ -20,4 +19,4 @@ setMethod("spkVar", "SpikeInExpressionSet",
               colnames(V) <- c("SpikeIn Amount", "MAD")
               return(V)
           }
-          )
+          

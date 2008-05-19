@@ -5,12 +5,10 @@
   Compute log-ratios among spike-in genes. 
 }
 \usage{
-spkPairNS(object, compare=NULL)
+spkPair(object)
 }
 \arguments{
   \item{object}{a SpikeInExpressionSet object}
-  \item{compare}{a matrix with two columns of which arrays to
-    compare. If NULL, all possible combinations are made.}
 }
 \value{
   An array containing either log-ratios (M), average log expression
@@ -20,6 +18,6 @@ spkPairNS(object, compare=NULL)
 \author{Matthew N. McCall}
 \examples{
 data(affy)
-affyPair <- spkPairNS(affy)
+affyPair <- spkPair(affy)
 }
 \keyword{manip}

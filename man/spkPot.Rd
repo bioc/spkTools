@@ -6,7 +6,7 @@
   2 appears in the the top 0.5\% (default) of log-ratios. 
 }
 \usage{
-spkPot(object, spkSlopeOut, sig, SD, precisionQuantile=.995)
+spkPot(object, spkSlopeOut, sig, SD, precisionQuantile)
 }
 \arguments{
   \item{object}{a SpikeInExpressionSet object}
@@ -23,7 +23,7 @@ spkPot(object, spkSlopeOut, sig, SD, precisionQuantile=.995)
 \examples{
 data(affy)
 affySlope <- spkSlope(affy)
-affyAccSD <- spkAccSD(affy)
-spkPot(affy, affySlope, affySlope$slopes, affyAccSD)
+affyAccSD <- spkAccSD(affy, affySlope)
+spkPot(affy, affySlope, affySlope$slopes, affyAccSD, .995)
 }
 \keyword{manip}

@@ -1,7 +1,6 @@
 
 ## anova: expr ~ spike + array + probe + error
-setMethod("spkAnova", "SpikeInExpressionSet",
-          function(object, model=expr~spike+probe+array){
+spkAnova <- function(object, model=expr~spike+probe+array){
               ## check model
               chk <- terms.formula(model)
               covs <- labels(chk)
@@ -44,5 +43,5 @@ setMethod("spkAnova", "SpikeInExpressionSet",
               names(out) <- c(covs,"error")
 
               return(out)
-          })
+          }
 

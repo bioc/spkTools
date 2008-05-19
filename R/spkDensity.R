@@ -1,7 +1,6 @@
 ## plot a density curve of the non-spike-in genes and a multicolor rug for the
 ## density of the spike-in genes
-setMethod("spkDensity", "SpikeInExpressionSet",
-          function(object, spkSlopeOut, cuts=TRUE, label=NULL, ...){
+spkDensity <- function(object, spkSlopeOut, cuts=TRUE, label=NULL, ...){
               avgExp <- spkSlopeOut$avgExp
               tmp <- spkSplit(object)
               s <- tmp$s
@@ -13,10 +12,10 @@ setMethod("spkDensity", "SpikeInExpressionSet",
               plot(nsden, xlab="Observed Expression Measure",
                    ylab="Density", main=label, ...)
               rug(avgExp)
-           if(!is.null(cuts)){
+           if(cuts){
               brkpts <- spkSlopeOut$brkpts
               abline(v=brkpts[1], lty=3)
               abline(v=brkpts[2], lty=3)
             }
           }
-          )
+          

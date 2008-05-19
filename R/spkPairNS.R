@@ -1,11 +1,10 @@
 ## compute all pairwise array comparisons for 1000 non-spikein probes
 ## only returns the positive fold change for each pairing
-setMethod("spkPairNS","SpikeInExpressionSet",
-          function(object,compare=NULL,output="M"){
+spkPairNS <- function(object,output="M"){
             tmp <- spkSplit(object)
             ns <- tmp$ns
             e <- exprs(ns)
-            ifelse(is.null(compare), p <- combinations(n=ncol(e),r=2), p <- compare)
+            p <- combinations(n=ncol(e),r=2)
             m <- matrix(nrow=nrow(e),ncol=nrow(p))
             ## rows are probes
             ## cols are arraypairs
@@ -21,5 +20,5 @@ setMethod("spkPairNS","SpikeInExpressionSet",
             } 
             return(m)
           }
-          )
+          
 

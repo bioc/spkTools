@@ -1,10 +1,9 @@
 ## boxplots of each comparison at a given fc
 ## generate breaks by spkSlope(object)$breaks
-setMethod("spkMA","SpikeInExpressionSet",
-          function(object, spkSlopeOut, fc=2, tol=3, compare=NULL,
-                   label=NULL, xaxis=NULL, ylim=NULL, outlier=1, reduce=TRUE){
+spkMA <- function(object, spkSlopeOut, fc=2, tol=3, label=NULL, ylim=NULL,
+                   outlier=1, reduce=TRUE, plot.legend=TRUE){
               ## M: log ratio
-              nsM <- spkPairNS(object,compare,output="M")
+              nsM <- spkPairNS(object,output="M")
               gc()
               ## determine which background probes are L,M,H
               brkpts <- spkSlopeOut$brkpts
@@ -39,7 +38,7 @@ setMethod("spkMA","SpikeInExpressionSet",
               rm(nsM)
               gc()
               ## A: avg exprs
-              nsA <- spkPairNS(object,compare,output="A")
+              nsA <- spkPairNS(object,output="A")
               gc()
               ## determine which background probes are L,M,H
               brkpts <- spkSlopeOut$brkpts
@@ -68,7 +67,7 @@ setMethod("spkMA","SpikeInExpressionSet",
               rm(nsA)
               gc()
               ## now for spike-ins
-              mafc <- spkPair(object,compare)
+              mafc <- spkPair(object)
               lfc <- round(log2(fc), digits=tol)
               ind <- round(mafc[,,3]-mafc[,,4],digits=tol)==lfc
               ind2 <- round(mafc[,,3]-mafc[,,4],digits=tol)==0
@@ -116,9 +115,12 @@ setMethod("spkMA","SpikeInExpressionSet",
               bgM <- c(M[[1]],M[[2]],M[[3]])
               bgA <- c(A[[1]],A[[2]],A[[3]])
               ind <- lapply(M,length)>0
-              posxnames <- c("Bg-Null LL", "Bg-Null MM", "Bg-Null HH", "S-Null LL", "S-Null MM", "S-Null HH",
+              posxnames <- c("Bg-Null LL", "Bg-Null MM", "Bg-Null HH",
+                             "S-Null LL", "S-Null MM", "S-Null HH",
                              "LL", "ML", "MM", "HL", "HM", "HH")
-              if(is.null(xaxis)) xaxis <- posxnames[ind]              
+              xaxis <- posxnames[ind]
+              i.spk <- which(xaxis%in%c("S-Null LL", "S-Null MM", "S-Null HH"))
+              legend.names <- xaxis[-i.spk]
               nulpch <- 22
               spkpch <- 17
               spkcols <- brewer.pal(8,"Set1")[c(1,3,5:8)]
@@ -127,9 +129,10 @@ setMethod("spkMA","SpikeInExpressionSet",
                      ptitle <- label)
               iOutlier <- bgM>=outlier | bgM<=-outlier
               if(is.null(ylim)){
+                ylim <- c(min(unlist(M)),max(unlist(M)))
                 smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
                               main=ptitle, nrpoints=0,
-                              xlab="A", ylab="M")
+                              xlab="A", ylab="M", ylim=ylim)
               } else{
                 smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
                               main=ptitle, nrpoints=0,
@@ -140,23 +143,22 @@ setMethod("spkMA","SpikeInExpressionSet",
               ##   if(length(M[k])>0) points(y=M[[k+3]],x=A[[k+3]],pch=nulpch,col=nulcols[k],cex=.4)
               ## }
               for(k in 1:6){
-                if(length(M[k])>0) points(y=M[[k+6]],x=A[[k+6]],pch=spkpch,col=spkcols[k],cex=.4)
+                if(length(M[k])>0) points(y=M[[k+6]],x=A[[k+6]],pch=spkpch,col=spkcols[k],cex=.5)
               }
               ## pchs <- c(rep(nulpch,sum(ind[4:6])),rep(spkpch,sum(ind[7:12])))
               ## cols <- c(nulcols,spkcols)[ind[4:12]]
               pchs <- rep(spkpch,sum(ind[7:12]))
               cols <- spkcols[ind[7:12]]
-              par(lwd=2, cex=1.1)
+              par(lwd=2,cex=1.5)
               ## determine how many bgs are present
               bgs <- vector(length=3)
               bgs[1] <- length(M[[1]])>0
               bgs[2] <- length(M[[2]])>0
               bgs[3] <- length(M[[3]])>0
-              n.bg <- sum(bgs)
-              ## remove Spike-Nulls
-              i.spk <- which(xaxis%in%c("S-Null LL", "S-Null MM", "S-Null HH"))
-              legend.names <- xaxis[-i.spk]
-              legend("bottomright", legend.names, pch=c(rep(15,n.bg),pchs), col=c(rep("blue",n.bg),cols),
-                     ncol=2, cex=.8, pt.cex=.8, box.lwd=1)
+              n.bg <- sum(bgs)              
+              if(plot.legend){
+                legend("bottomright", legend.names, pch=c(rep(15,n.bg),pchs),
+                       col=c(rep("blue",n.bg),cols), ncol=2, cex=.8,
+                       pt.cex=.8, box.lwd=1)
+              }
           }
-          )

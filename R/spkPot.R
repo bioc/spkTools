@@ -1,5 +1,4 @@
-setMethod("spkPot", "SpikeInExpressionSet",
-          function(object, spkSlopeOut, sig, SD, precisionQuantile=.995){
+spkPot <- function(object, spkSlopeOut, sig, SD, precisionQuantile=.995){
     nsM <- spkPairNS(object)
     gc()
     ## determine which background probes are L,M,H
@@ -28,4 +27,4 @@ setMethod("spkPot", "SpikeInExpressionSet",
     POTs[2] <- 1-pnorm(p9[2], mean=sig[2], sd=SD[2])
     POTs[3] <- 1-pnorm(p9[3], mean=sig[3], sd=SD[3])
     return(data.frame(quantiles=p9, POTs=POTs))
-})
+}

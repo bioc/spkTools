@@ -1,7 +1,6 @@
 ## signal detect slope for the entire datasets
 ## and for each bin -- low, med, high
-setMethod("spkSlope", "SpikeInExpressionSet",
-          function(object, label=NULL, cuts=c(.6,.99), ...){
+spkSlope <- function(object, label=NULL, cuts=c(.6,.99), ...){
               ## set palette
               palette(brewer.pal(8,"Dark2"))
               tmp <- spkSplit(object)
@@ -39,7 +38,7 @@ setMethod("spkSlope", "SpikeInExpressionSet",
               y1 <- a+b*x1
               segments(x0, y0, x1, y1, col=3, lwd=4)
               ## legends
-              txt <- paste("total:", rSlps[1])
+              txt <- paste("Slope:", rSlps[1])
               legend("bottomright", txt, col=3, lty=1, lwd=4, cex=.8,
                      bg="white")
               return(list(avgExp=avgE, slopes=rSlps, breaks=rbind(amt, brks),
@@ -120,14 +119,14 @@ setMethod("spkSlope", "SpikeInExpressionSet",
               if(B[2]) rSlps[3] <- medReg$coef[2]
               if(B[3]) rSlps[4] <- highReg$coef[2]
               rSlps <- round(rSlps, digits=2)
-              names(rSlps) <- c("total", "low", "med", "high")
-              txt <- c(paste("total:", rSlps[1]),
-                       paste("low:", rSlps[2]), paste("med:", rSlps[3]),
-                       paste("high:", rSlps[4]))
+              names(rSlps) <- c("Total", "Low", "Med", "High")
+              txt <- c(paste("Total:", rSlps[1]),
+                       paste("Low:", rSlps[2]), paste("Med:", rSlps[3]),
+                       paste("High:", rSlps[4]))
               legend("bottomright", txt, col=3:6, lty=1, lwd=4, cex=.8,
                      bg="white")
               return(list(avgExp=avgE, slopes=rSlps, breaks=rbind(amt, brks),
                           brkpts=brkpts, prop=prop))
             }
           }
-          )
+          

@@ -1,6 +1,5 @@
 ## estimate the sd for spike-ins at the lowest possible fc in each bin
-setMethod("spkAccSD","SpikeInExpressionSet",
-          function(object, spkSlopeOut, tol=3){
+spkAccSD <- function(object, spkSlopeOut, tol=3){
               breaks <- spkSlopeOut$breaks
               n <- m <- vector(length=3)
               for(k in 1:3){
@@ -39,4 +38,4 @@ setMethod("spkAccSD","SpikeInExpressionSet",
                 if (is.na(m[k])) madFC[k] <- NA else madFC[k] <- MADs[k,which(um==m[k])]
               }
               return(madFC)
-              })
+            }

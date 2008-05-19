@@ -1,8 +1,7 @@
 ## boxplots of each comparison at a given fc
 ## generate breaks by spkSlope(object)$breaks
-setMethod("spkBox","SpikeInExpressionSet",
-          function(object, spkSlopeOut, fc=2, tol=3, compare=NULL, grps=NULL){
-              nsM <- spkPairNS(object,compare)
+spkBox <- function(object, spkSlopeOut, fc=2, tol=3){
+              nsM <- spkPairNS(object)
               gc()
               ## determine which background probes are L,M,H
               brkpts <- spkSlopeOut$brkpts
@@ -29,7 +28,7 @@ setMethod("spkBox","SpikeInExpressionSet",
               rm(nsM)
               gc()
               ## now for spike-ins
-              mafc <- spkPair(object,compare)
+              mafc <- spkPair(object)
               lfc <- round(log2(fc), digits=tol)
               ind <- round(mafc[,,3]-mafc[,,4],digits=tol)==lfc
               ind2 <- round(mafc[,,3]-mafc[,,4],digits=tol)==0
@@ -64,16 +63,8 @@ setMethod("spkBox","SpikeInExpressionSet",
               posxnames <- c("Bg-Null LL", "Bg-Null MM", "Bg-Null HH",
                              "S-Null LL", "S-Null MM", "S-Null HH", "LL", "ML",
                              "MM", "HL", "HM", "HH")
-              if (is.null(grps)){
-                boxs[ind] <- NULL
-                names(boxs) <- posxnames[!ind]
-              } else {
-                ind2 <- posxnames %in% grps
-                boxs[ind & ind2] <- NA
-                boxs[ind & !ind2] <- NULL
-                names(boxs) <- posxnames[ind2]
-              }
+              boxs[ind] <- NULL
+              names(boxs) <- posxnames[!ind]
               return(boxs)
           }
-          )
 
