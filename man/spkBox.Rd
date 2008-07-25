@@ -7,13 +7,14 @@
   compared to produce the given fold change.
 }
 \usage{
-spkBox(object, spkSlopeOut, fc = 2, tol = 3)
+spkBox(object, spkSlopeOut, fc = 2, tol = 3, reduce=TRUE)
 }
 \arguments{
   \item{object}{a SpikeInExpressionSet object}
   \item{spkSlopeOut}{the output of the spkSlope function}
   \item{fc}{the fold change of interest}
   \item{tol}{the precision (number of digits after decimal point) in fc}
+  \item{reduce}{if TRUE the number of points plotted in the null bins is reduced}
 }
 \details{
   This function requires the output of spkSlope.

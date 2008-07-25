@@ -1,6 +1,6 @@
 ## boxplots of each comparison at a given fc
 ## generate breaks by spkSlope(object)$breaks
-spkBox <- function(object, spkSlopeOut, fc=2, tol=3){
+spkBox <- function(object, spkSlopeOut, fc=2, tol=3, reduce=TRUE){
               nsM <- spkPairNS(object)
               gc()
               ## determine which background probes are L,M,H
@@ -8,21 +8,27 @@ spkBox <- function(object, spkSlopeOut, fc=2, tol=3){
               eMeans <- rowMeans(exprs(spkSplit(object)$ns), na.rm=TRUE)
               if(brkpts[1] > -Inf){
                 bgLow <- as.vector(nsM[eMeans<brkpts[1], ])
-                N <- length(bgLow)
-                M <- 5000
-                bgLow <- sort(bgLow)[seq(N/(2*M),N-N/(2*M),len=M)]
+                if(reduce){
+                  N <- length(bgLow)
+                  M <- 5000
+                  bgLow <- sort(bgLow)[seq(N/(2*M),N-N/(2*M),len=M)]
+                }
                 gc()
               } else bgLow <- numeric(0)
               bgMed <- as.vector(nsM[eMeans>=brkpts[1]&eMeans<brkpts[2], ])
-              N <- length(bgMed)
-              M <- 5000
-              bgMed <- sort(bgMed)[seq(N/(2*M),N-N/(2*M),len=M)]
+              if(reduce){
+                N <- length(bgMed)
+                M <- 5000
+                bgMed <- sort(bgMed)[seq(N/(2*M),N-N/(2*M),len=M)]
+              }
               gc()
               if(brkpts[2] < Inf){
                 bgHigh <- as.vector(nsM[eMeans>=brkpts[2], ])
-                N <- length(bgHigh)
-                M <- 5000
-                bgHigh <- sort(bgHigh)[seq(N/(2*M),N-N/(2*M),len=M)]
+                if(reduce){
+                  N <- length(bgHigh)
+                  M <- 5000
+                  bgHigh <- sort(bgHigh)[seq(N/(2*M),N-N/(2*M),len=M)]
+                }
                 gc()
               } else bgHigh <- numeric(0)
               rm(nsM)

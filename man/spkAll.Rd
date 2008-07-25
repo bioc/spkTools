@@ -1,18 +1,14 @@
 \name{spkAll}
 \alias{spkAll}
-\alias{spkFuncs}
 \title{Spike-in Functions Wrapper}
 \description{
   A wrapper for the functions contained in the spkTools package, which
-  calls each function for each sample.
+  calls each function.
 }
 \usage{
 spkAll(object, label, model=expr~spike+probe+array, fc=NULL, tol=3,
-xrngs=NULL, yrngs=NULL, cuts=c(.6,.99), potQuantile=.995, pch=".",
-output="eps")
-spkFuncs(object, label, model=expr~spike+probe+array, fc=NULL, tol=3,
-xrngs=NULL, yrngs=NULL, cuts=c(.6,.99), potQuantile=.995, pch=".",
-output="eps")
+xrngs=NULL, yrngs=NULL, cuts=c(.6,.99), potQuantile=.995,
+gnn=c(25,100,10000), pch=".", output="eps")
 }
 \arguments{
   \item{object}{a SpikeInExpressionSet object}
@@ -28,14 +24,12 @@ output="eps")
   \item{cuts}{quantiles used to make the low, medium, and high bins}
   \item{potQuantile}{the desired quantile to compute the probability of
     being above}
+  \item{gnn}{a vector of 3 numbers passed to spkGNN: the desired number
+    of true positives, the number of truly expressed genes, and the
+    number of truly unexpressed genes}
   \item{pch}{plotting point to be used in spkSlope}
   \item{output}{the format in which to save the plots produced. Options
-    are "pdf" and "eps".}
-}
-\details{
-  If there are multiple samples in the SpikeInExpressionSet object that
-  can be accessed via pData(object)\$sample, the plots and tables will be
-  computed for each sample separately. 
+    are "pdf" and "eps"}
 }
 \value{
   A number of plots and tables are created and saved in the current

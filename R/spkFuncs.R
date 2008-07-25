@@ -1,7 +1,7 @@
 ## wrapper for spikein functions
-spkFuncs <- function(object, label, model=expr~spike+probe+array, fc=NULL,
+spkAll <- function(object, label, model=expr~spike+probe+array, fc=NULL,
                    tol=3, xrngs=NULL, yrngs=NULL, cuts=c(.6,.99),
-                   potQuantile=.995, pch=".", output="eps"){
+                   potQuantile=.995, gnn=c(25,100,10000), pch=".", output="eps"){
             mypar <- function(a=1,b=1,brewer.n=8,brewer.name="Dark2",...){
               par(mar=c(2.5,2.5,1.6,1.1),mgp=c(1.5,.5,0))
               par(mfrow=c(a,b),...)
@@ -78,12 +78,18 @@ spkFuncs <- function(object, label, model=expr~spike+probe+array, fc=NULL,
                   PrecisionQuantile <- round(pot$quantiles, digits=2)
                   SNR <- round(AccuracySlope/PrecisionSD, digits=2)
                   POT <- round(pot$POTs, digits=2)
+                  GNN <- vector(length=3)
+                  for(k in 1:3){
+                    GNN[k] <- spkGNN(n=gnn[1], n.expr=gnn[2], n.unexpr=gnn[3],
+                                     AccuracySlope[k], AccuracySD[k], spkBoxOut[[k]])
+                  }
                   tab2 <- data.frame(AccuracySlope=AccuracySlope,
                                      AccuracySD=AccuracySD,
                                      PrecisionSD=PrecisionSD,
                                      PrecisionQuantile=PrecisionQuantile,
                                      SNR=SNR,
-                                     POT=POT)
+                                     POT=POT,
+                                     GNN=GNN)
                   write.csv(tab2, file=paste("spkT2", olab, ".csv", sep=""),
                             row.names=c("Low","Med","High"))
                   cat("Done\n")
