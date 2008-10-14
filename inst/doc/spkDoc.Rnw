@@ -23,33 +23,10 @@
 <<echo=T,results=hide>>=
 library(spkTools)
 @ 
-Load Affymetrix HGU133A spike-in dataset:
+Load a SpikeInExpressionSet object :
 <<echo=T,results=hide>>=
-library(affy)
-library(SpikeIn)
-data(SpikeIn133)
-@ 
-Use RMA for preprocessing:
-<<echo=T,results=hide>>=
-e <- rma(SpikeIn133)
-@ 
-Set up a matrix of expression values and a matrix of nominal concentrations:
-<<echo=T,results=hide>>=
-expr.affy <- exprs(e)
-spks <- t(pData(e))
-i <- sort(rownames(spks),index.return=T)$ix
-spks <- spks[i,]
-nomin.affy <- matrix(NA,nrow=nrow(expr.affy),ncol=ncol(expr.affy))
-ind <- which(rownames(expr.affy)%in%rownames(spks))
-nomin.affy[ind,] <- spks
-rownames(nomin.affy) <- rownames(expr.affy)
-colnames(nomin.affy) <- colnames(expr.affy)
-nomin.affy[nomin.affy==0] <- NA
-nomin.affy <- log2(nomin.affy)
-@ 
-Create a new SpikeInExpressionSet object from the two matrices:
-<<echo=T,results=hide>>=
-object <- new("SpikeInExpressionSet",exprs=expr.affy,spikeIn=nomin.affy)
+data(affy)
+object <- affy
 @ 
 
 \newpage
