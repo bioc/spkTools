@@ -1,6 +1,6 @@
 Package: spkTools
-Version: 0.0.9
-Date: 2007-10-09
+Version: 0.1.0
+Date: 2008-10-14
 Title: Methods for Spike-in Arrays
 Author: Matthew N McCall <mmccall@jhsph.edu>, Rafael A Irizarry <rafa@jhu.edu>
 Maintainer: Matthew N McCall <mmccall@jhsph.edu>
