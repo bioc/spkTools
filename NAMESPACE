@@ -1,6 +1,10 @@
 importFrom(RColorBrewer, brewer.pal)
 importFrom(geneplotter, smoothScatter)
 importFrom(gtools, combinations, permutations)
+importMethodsFrom(methods, initialize)
+importClassFrom(Biobase, ExpressionSet)
+importMethodsFrom(Biobase, annotatedDataFrameFrom, exprs)
+importFrom(Biobase, assayDataElement, assayDataNew)
 
 exportClasses(SpikeInExpressionSet)
 exportMethods(initialize, spikeIn, spkSplit)
