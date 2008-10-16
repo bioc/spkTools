@@ -5,7 +5,7 @@ spkAll <- function(object, label, model=expr~spike+probe+array, fc=NULL,
             mypar <- function(a=1,b=1,brewer.n=8,brewer.name="Dark2",...){
               par(mar=c(2.5,2.5,1.6,1.1),mgp=c(1.5,.5,0))
               par(mfrow=c(a,b),...)
-              palette(RColorBrewer:::brewer.pal(brewer.n,brewer.name))
+              palette(brewer.pal(brewer.n,brewer.name))
             }
             ## output label
             olab <- paste(strsplit(label, " ")[[1]], collapse="")

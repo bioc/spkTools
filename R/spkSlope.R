@@ -2,7 +2,7 @@
 ## and for each bin -- low, med, high
 spkSlope <- function(object, label=NULL, cuts=c(.6,.99), ...){
               ## set palette
-              palette(RColorBrewer:::brewer.pal(8,"Dark2"))
+              palette(brewer.pal(8,"Dark2"))
               tmp <- spkSplit(object)
               s <- tmp$s
               ns <- tmp$ns

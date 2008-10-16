@@ -1,0 +1,9 @@
+importFrom(RColorBrewer, brewer.pal)
+importFrom(geneplotter, smoothScatter)
+importFrom(gtools, combinations, permutations)
+
+exportClasses(SpikeInExpressionSet)
+exportMethods(initialize, spikeIn, spkSplit)
+export(plotSpkBox, spkAccSD, spkAll, spkAnova, spkBal, spkBox, spkDensity,
+       spkGNN, spkMA, spkPair, spkPairNS, spkPot, spkQuantile, spkSlope,
+       spkVar, summarySpkBox)
