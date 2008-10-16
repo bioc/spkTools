@@ -1,7 +1,7 @@
 % automatic manuscript creation for spkTools
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{spkTools report}
-%\VignetteDepends{Biobase,affy,RColorBrewer,gtools}
+%\VignetteDepends{Biobase,affy,RColorBrewer,gtools,geneplotter,xtable}
 %\VignettePackage{spkTools}
 %documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
@@ -29,14 +29,14 @@ data(affy)
 object <- affy
 @ 
 
-\newpage
-
 Set a few parameters:
 <<echo=T,results=hide>>=
 fc=2
 label="Affymetrix"
 par(mar=c(3,2.5,2,0.5), cex=1.8)
 @ 
+
+\newpage
 
 \begin{figure}[!h]
 \begin{center}
@@ -123,7 +123,9 @@ colnames(tab1) <- c("Nominal Conc",
                     "ALE Strata",
                     "Std Dev")
 @ 
+
 <<results=tex,echo=F>>=
+library(xtable)
 tab1x <- xtable(tab1)
 print(tab1x)
 @ 
