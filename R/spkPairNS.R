@@ -4,7 +4,7 @@ spkPairNS <- function(object,output="M"){
             tmp <- spkSplit(object)
             ns <- tmp$ns
             e <- exprs(ns)
-            p <- combinations(n=ncol(e),r=2)
+            p <- gtools:::combinations(n=ncol(e),r=2)
             m <- matrix(nrow=nrow(e),ncol=nrow(p))
             ## rows are probes
             ## cols are arraypairs

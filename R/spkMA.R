@@ -123,18 +123,18 @@ spkMA <- function(object, spkSlopeOut, fc=2, tol=3, label=NULL, ylim=NULL,
               legend.names <- xaxis[-i.spk]
               nulpch <- 22
               spkpch <- 17
-              spkcols <- brewer.pal(8,"Set1")[c(1,3,5:8)]
-              nulcols <- brewer.pal(8,"Greys")[6:8]
+              spkcols <- RColorBrewer:::brewer.pal(8,"Set1")[c(1,3,5:8)]
+              nulcols <- RColorBrewer:::brewer.pal(8,"Greys")[6:8]
               ifelse(is.null(label), ptitle <- paste("FC =", fc),
                      ptitle <- label)
               iOutlier <- bgM>=outlier | bgM<=-outlier
               if(is.null(ylim)){
                 ylim <- c(min(unlist(M)),max(unlist(M)))
-                smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
+                geneplotter:::smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
                               main=ptitle, nrpoints=0,
                               xlab="A", ylab="M", ylim=ylim)
               } else{
-                smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
+                geneplotter:::smoothScatter(y=bgM[!iOutlier], x=bgA[!iOutlier],
                               main=ptitle, nrpoints=0,
                               xlab="A", ylab="M", ylim=ylim)
               }
