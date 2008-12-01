@@ -1,10 +1,11 @@
 % automatic manuscript creation for spkTools
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
-%\VignetteIndexEntry{spkTools report}
+%\VignetteIndexEntry{spkTools: Spike-in Data Analysis and Visualization}
 %\VignetteDepends{Biobase,RColorBrewer,gtools,geneplotter,xtable}
 %\VignettePackage{spkTools}
-%documentclass[12pt, a4paper]{article}
 \documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage[authoryear, round]{natbib}
 
 \textwidth=6.2in
 \textheight=8.5in
@@ -14,11 +15,217 @@
 \evensidemargin=.1in
 \headheight=-.3in
 
+\newcommand\Rpackage[1]{{\textsf{#1}\index{#1 (package)}}}
+\newcommand\dataset[1]{{\textit{#1}\index{#1 (data set)}}}
+\newcommand\Rclass[1]{{\textit{#1}\index{#1 (class)}}}
+\newcommand\Rfunction[1]{{{\small\texttt{#1}}\index{#1 (function)}}}
+\newcommand\Rfunarg[1]{{\small\texttt{#1}}}
+\newcommand\Robject[1]{{\small\texttt{#1}}}
+
 \author{Matthew N. McCall}
 
 \begin{document}
 \title{Tools for Spike-in Data Analysis and Visualization (spkTools)}
 \maketitle
+\tableofcontents
+
+\section{Introduction}
+  As the number of users of microarray technology continues to grow,
+  so does the importance of platform assessments and
+  comparisons. Spike-in experiments have been successfully used for
+  internal technology assessments by microarray manufacturers and for
+  comparisons of competing data analysis approaches. The microarray
+  literature is saturated with statistical assessments based on
+  spike-in experiment data. Unfortunately, the statistical assessments
+  vary widely and are applicable only in specific cases. This has
+  introduced confusion into the debate over best practices with
+  regards to which platform, protocols, and data analysis tools are
+  best. Furthermore, cross-platform comparisons have proven difficult
+  because reported concentrations are not comparable. We present a
+  novel statistical solution that enables cross-platform comparisons,
+  and propose a comprehensive procedure for assessments based on
+  spike-in experiments. The ideas are implemented in a user friendly
+  Bioconductor package: \Rpackage{spkTools}.
+
+  This document describes the \Rpackage{spkTools}, which implements
+  the methods suggested in the Nucleic Acids Research paper,
+  \emph{Consolidated strategy for the analysis of microarray spike-in data}
+  (McCall \& Irizarry 2008). While ideally someone interested in using
+  this package would read the paper, sections relating specifically to
+  the \Rpackage{spkTools} package are included here.
+
+\section{SpikeInExpressionSet}
+  This package defines a new S4 class that extends the
+  \Rclass{ExpressionSet} class to include a matrix of
+  nominal concentrations; this new class is called a
+  \Rclass{SpikeInExpressionSet}. The functions implemented in this
+  package take an object of this type as their input and
+  produce the tables and plots presented in this paper. Of particular
+  interest is the function \Rfunction{spkAll}, which is a wrapper
+  function for all the functions contained in this package. When run
+  on a \Rclass{SpikeInExpressionSet} object, it produces the full
+  complement of tables and plots shown in this paper and saves them
+  with easily recognizable file-names. Although this package was
+  designed with the intent of producing the full array of results for
+  each experiment, the functions can also be applied separately with a
+  few exceptions where the output of one function is required as the
+  input of another.
+
+\section{spkTools Methods}
+
+\subsection{Relating nominal concentrations across data sets}
+  Our solution to the problem of mapping was to replace each nominal
+  concentration with the average log expression across arrays (ALE)
+  for genes spiked in at that concentration.  This approach assures
+  that performance assessments based on spike-in data are related to
+  expression measurements that are defined consistently across
+  platforms: low, medium, and high ALE values correspond to low,
+  medium, and high observed expression values respectively.
+
+\subsection{Accuracy assessment}
+With the ALE values in place, we were ready to adapt some of the
+existing statistical assessments to cross-platform comparisons. We
+started with a basic assessment of accuracy: the \emph{signal
+  detection slope}. Microarrays are designed to
+  measure the abundance of sample RNA. In principle, we expect a
+  doubling of nominal concentration to result in a doubling of
+  observed intensity. In other words, on the $\log_{2}$ scale, the
+slope from the regression of expression on nominal concentration can
+be interpreted as the expected observed difference when the true
+difference is a fold change of 2. Thus, an optimal result is a slope
+of one, and values higher and lower than one are associated with over
+and under estimation respectively.
+
+\subsection{ALE strata}
+It has been noted that at very high and very low concentrations one
+typically observes lower slopes compared to those seen at medium
+concentrations. To address this, we consider the
+signal detection slopes for genes spiked-in at low, medium, and high
+ALE values. We implemented a data-driven approach to selecting
+  these two cut-offs.
+
+We defined $f$ to be the function that maps nominal log
+  concentration $x$ to expected observed concentration $f(x)$. Using a
+  cubic spline, fitted to the observed data, we obtained a parametric
+  representation of $f$. We then looked for concentrations for which
+  clear changes in sensitivity occurred, i.e. values of $x$ with large
+  slope changes. Note that large changes in slope result in local
+  maxima in the absolute value of the second derivative of $f$. For
+  each platform, the absolute value of the second derivative $f''$
+  showed two clear local maxima. For each
+  platform we mapped each concentration $x$ to its corresponding
+  empirical percentile $\Phi(x)$ and plotted $|f''(x)|$ against
+  $\Phi(x)$. The percentiles that maximized
+  the slope change were similar across platforms. The modes for the
+  average curve were 0.615 and 0.993. Therefore, for the purpose of
+  this comparison, we assigned as \emph{low}, ALE values less than the
+  60th percentile of the distribution of background RNA. Similarly we
+  defined as \emph{high} ALE values above the 99th percentile. The
+  remaining ALE values, between the 60th and 99th percentile, were
+  denoted as \emph{medium}. Our choice of cut-points was further
+  motivated by observing that for the Affymetrix data the 60th
+  percentile provided a good cut-off for distinguishing genes called
+  present from genes called absent.
+
+\subsection{Precision assessments}
+To complete our comparison we needed to assess specificity. Because the
+majority of microarray studies rely on relative measures (e.g. fold
+change) as opposed to absolute ones, we focused on the precision of
+the basic unit of relative expression: log-ratios.  We adapted the
+precision assessment of Cope et al. that focused on
+the variability of log-ratios generated by comparisons expected to
+produce log-ratios of 0.  Our set of comparisons was created by making
+all possible comparisons between spiked-in transcripts across arrays
+in which they had the same nominal concentration and from all possible
+comparisons within the background RNA. We referred to this group of
+comparisons as the \emph{Null} set. The standard deviation (SD) of
+these log-ratios served as a basic assessment of precision and has a
+useful interpretation: it is the expected range of observed log-ratios
+for genes that are not differentially expressed. 
+
+Because specificity varies with nominal concentration, we stratified
+these comparisons into low, medium, and high ALE values. Many outliers
+were observed on each platform. This was expected given the documented
+problem of cross-hybridization. Because a platform with larger SD and
+small outliers might be preferable to one with a smaller SD but large
+outliers we included the 99.5th percentile of the null distribution as
+a second summary assessment of specificity. Note that in a typical
+experiment close to 0.5\% of null genes are expected to exceed this
+value, which translates to approximately 100 genes on whole genome
+arrays. We also included comparisons of spike-ins expected to
+yield a certain fold change. These serve to further demonstrate the
+variability of relative expression across ALE strata. They also serve
+as a rough illustration of the accuracy of log-ratios for each ALE
+strata.
+
+\subsection{Performance assessments}
+Precision and accuracy assessments on their own may not be of much
+practical use. However, the summary statistics described above can be easily combined to answer any practical question, as long as
+it can be posed in a statistical context. We focus on two summaries
+  related to the common problem of detecting differentially expressed
+  genes. Note that we purposely developed summaries that do not
+  directly penalize for a lack of accuracy and precision as long as the
+  real differences are detected. However, as expected, detection
+  ability was highly dependent on accuracy and precision.
+
+For the first example, we computed the chance that, when comparing two
+samples, a gene with true log fold change $\Delta=1$ will appear in a
+list of the top 100 genes (highest log-ratios). We refer to this
+quantity as the \emph{probability of being at the top} (POT) and
+recommend computing it separately in each ALE strata. Specifically, we
+assume that the log-ratios in each ALE strata follow a normal
+distribution with mean and variance estimated from the data (accuracy
+slope and standard deviation) and compute the probability
+that a random variable from that distribution exceeds the 99.5th
+percentile of the null distribution.
+
+As a second example, we computed the expected size of a gene list
+  one would have to consider to find $n$ genes that have a true log
+  fold change $\Delta$. To perform this calculation we assumed $m_1$
+  genes were differentially expressed and $m_0$ were not. Note that
+  $m_1+m_0$ is the number of genes on the array. Furthermore, we
+  assumed that the true log-ratios in each ALE strata followed a
+  normal distribution with mean and variance estimated from the data
+  (accuracy slope and standard deviation). The empirical
+  distribution was used for the null genes.  With these assumptions in
+  place we computed the gene list size for $n=10$, $m_1=100$, and
+  $m_0=10000$, we calculate the gene list size, $N$, required to
+  obtain $n=10$ true fold changes.  We refer to this
+  quantity as the \emph{gene-list needed to detect $n$ true-positives
+    (GNN)}. Again, we recommend computing it separately in each ALE
+  strata.
+
+\subsection{Imbalance measure} 
+Those interested in taking advantage of our methodology should know
+that an important requirement is a spike-in experimental design that
+does not confound nominal concentrations and genes. A large source of
+variability in microarray data is the probe-effect and these vary
+across platforms. We fitted an ANOVA model to describe the probe
+effect for each platform. Note that if nominal concentrations are
+confounded with genes, it becomes impossible to separate differences
+due to signal detection from differences in probe affinities. Many of
+the previously published spike-in experiments suffer from this
+confounding effect. To quantify design imbalance we used the following
+measure of imbalance developed by Wu (1981):
+\begin{equation}
+IB = \sum_{i=1}^p \lambda_{i} \sum_{u_{i}}^{r_{i}} \Big( \sum_{t=1}^T
+n_{t}^2(u_{i})-\frac{1}{T}n^2(u_i) \Big)
+\end{equation}
+where $i$ denotes each covariate, $\lambda_{i}$ an optional weight
+associated with each covariate, $u_{i}$ are the possible levels for
+covariate $i$, $t$ represents the treatment levels, $n_{t}(u_{i})$ is
+the number of units with its $i$th covariate at level $u_{i}$
+receiving treatment $t$, and $n(u_{i})$ is the total number of units
+with its $i$th covariate at level $u_{i}$. In our
+case, the two covariates are probe and array, and the treatment is
+nominal concentration. Since imbalance is defined as a weighted sum of
+the imbalance due to each covariate, we chose to report the probe and
+array imbalance separately to give a better understanding of the
+source of the imbalance in each design. In order to not penalize large
+designs, we divided the probe imbalance by the number of probes and
+the array imbalance by the number of arrays. 
+
+\section{Example}
 
 <<echo=T,results=hide>>=
 library(spkTools)
@@ -206,4 +413,10 @@ print(tab3x)
   more confounding the larger these values. Because Affymetrix using a
   latin square design, there is no imbalance.}
 
+\nocite{*}
+
+\bibliographystyle{plainnat}
+\bibliography{spkDoc}
+
 \end{document}
+
