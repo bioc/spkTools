@@ -1,56 +1,96 @@
 \name{SpikeInExpressionSet-class}
 \docType{class}
+\alias{class:SpikeInExpressionSet}
 \alias{SpikeInExpressionSet-class}
-\alias{SpikeInExpressionSet,ANY}
 \alias{SpikeInExpressionSet}
-\alias{initialize,SpikeInExpressionSet-class}
-\alias{spikeIn,SpikeInExpressionSet-class}
-\alias{spkSplit,SpikeInExpressionSet-class}
-\title{SpikeInExpressionSet-class}
+\alias{SpikeInExpressionSet-methods}
+\alias{initialize,SpikeInExpressionSet-method}
+\alias{spikeIn,SpikeInExpressionSet-method}
+\alias{spikeIn<-,SpikeInExpressionSet,matrix-method}
+\alias{spkSplit,SpikeInExpressionSet-method}
+\title{
+  Class to Contain and Describe High-Throughput Expression Level Assays
+  with Spike-in Data}
 \description{This is a class representation for spike-in expression
-  data. The main components are the intensities and nominal
-  concentrations from multiple arrays. It extends
-  \code{\link[Biobase:class.eSet]{eSet}}.} 
-\section{Objects from the Class}{
-  Objects can be created by creating a new object of type SpikeInExpressionSet.
-}
-\section{Slots}{
-  \describe{
-    \item{\code{assayData}:}{Object of class \code{AssayData}
-      containing the raw data, which will be at minimum a matrix of
-      intensity values (exprs) and a matrix of nominal concentrations
-      (spikeIn).}  
-    \item{\code{phenoData}:}{Object of class \code{AnnotatedDataFrame}
-      containing phenotypic data for the samples.}
-    \item{\code{annotation}}{A character string identifying the
-      annotation used for the \code{ExpressionSet} instance.}
-    \item{\code{featureData}}{Object of class \code{AnnotatedDataFrame}
-      containing feature-level (e.g., probeset-level) information.}
-    \item{\code{experimentData}:}{Object of class "MIAME" containing
-      experiment-level information.} 
-  }
-}
+  data. \code{SpikeInExpressionSet} class is dervied from
+  \code{\link{ExpressionSet}}, and requires a matrix names \code{exprs}
+  and a matrix named \code{spikeIn}.}
 \section{Extends}{
-Class \code{"ExpressionSet"}, directly.
+  Extends class \code{\link{ExpressionSet}}.
+  }
+\section{Creating Objects}{
+
+  \code{new("SpikeInExpressionSet")}
+
+  \code{new("SpikeInExpressionSet",
+    phenoData = new("AnnotatedDataFrame"),
+    featureData = new("AnnotatedDataFrame"),
+    experimentData = new("MIAME"),
+    annotation = character(0),
+    exprs = new("matrix"),
+    spikeIn = new("matrix"))
+  }  
+
+  This creates a \code{SpikeInExpressionSet} with \code{assayData}
+  implicitly created to contain \code{exprs} and
+  \code{spikeIn}. Additional named matrix arguements with the same
+  dimensions as \code{exprs} are added to \code{assayData}; the row
+  and column names of these additional matricies should match those of
+  \code{exprs} and \code{spikeIn}.
+
+  \code{new("SpikeInExpressionSet",
+    assayData = assayDataNew(exprs=new("matrix"),spikeIn=new("matrix")),  
+    phenoData = new("AnnotatedDataFrame"),
+    featureData = new("AnnotatedDataFrame"),
+    experimentData = new("MIAME"),
+    annotation = character(0),
+  }
+
+  This creates a \code{SpikeInExpressionSet} with \code{assayData}
+  provided explicitly. In this form, the only required named argument is
+  \code{assayData}.
 }
-\section{Methods}{
+    
+\section{Slots}{
+  Inherited from \code{ExpressionSet}:
   \describe{
-    \item{initialize}{\code{signature(object = "SpikeInExpressionSet",
-	method="character")}} used to create a new SpikeInExpressionSet
-    object.
-    \item{spikeIn}{\code{signature(object = "SpikeInExpressionSet",
-	method="character")}} extract the nominal concentration matrix
-    from a SpikeInExpressionSet object.
-    \item{spkSplit}{\code{signature(object = "SpikeInExpressionSet",
-	method="character")}} creates two SpikeInExpressionSet objects
-    -- one with the spike-in probes and one with the non-spike-in
-    probes. 
+    \item{\code{assayData}:}{Contains matrices with equal dimensions,
+      and with column number equal to
+      \code{nrow(phenoData)}. \code{assayData} must contain a matrix
+      \code{exprs} and a matrix \code{spikeIn} with rows representing
+      features and columns representing samples.}  
+    \item{\code{phenoData}:}{See \code{\link{eSet}}}
+    \item{\code{annotation}}{See \code{\link{eSet}}}
+    \item{\code{featureData}}{See \code{\link{eSet}}}
+    \item{\code{experimentData}:}{See \code{\link{eSet}}} 
   }
 }
-\note{This class is better described in the vignette.}
-\seealso{\code{\link[Biobase:class.eSet]{eSet}}} 
+
+\section{Methods}{
+  Class-specific methods:
+  \describe{
+    \item{\code{spikeIn(SpikeInExpressionSet)},
+      \code{spikeIn(SpikeInExpressionSet)<-}}{Access and set elements
+      named \code{spikeIn} in the \code{AssayData-class} slot.}
+    \item{\code{spkSplit(SpikeInExpressionSet)}}{creates two SpikeInExpressionSet objects
+      -- one with the spike-in probes and one with the non-spike-in
+      probes.}
+  }
+
+  For derived methods (see \code{\link{ExpressionSet}}).
+}
+
+\seealso{
+  \code{\link{eSet-class}}, \code{\link{ExpressionSet-class}}. 
+} 
 
 \examples{
+# create an instance of SpikeInExpressionSet
+new("SpikeInExpressionSet")
+
+new("SpikeInExpressionSet", exprs=matrix(runif(1000), nrow=100), spikeIn=matrix(rep(1:10,100), nrow=100))
+
+# class specific methods
 data(affy)
 affySpikes <- spikeIn(affy)
 affySplit <- spkSplit(affy)

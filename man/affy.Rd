@@ -7,7 +7,7 @@ Affymetrix  HGU133A Spike-in Experiment.
 }
 \usage{data(affy)}
 \format{
-It contains a matrix of expression values and a matrix on nominal
+It contains a matrix of expression values and a matrix of nominal
 concentrations.
 }
 \source{
