@@ -9,8 +9,7 @@
 
 \textwidth=6.2in
 \textheight=8.5in
-\parindent0in
-%\parskip=.3cm
+\parskip=.3cm
 \oddsidemargin=.1in
 \evensidemargin=.1in
 \headheight=-.3in
@@ -47,11 +46,11 @@
   spike-in experiments. The ideas are implemented in a user friendly
   Bioconductor package: \Rpackage{spkTools}.
 
-  This document describes the \Rpackage{spkTools}, which implements
+  This document describes \Rpackage{spkTools}, which implements
   the methods suggested in the Nucleic Acids Research paper,
   \emph{Consolidated strategy for the analysis of microarray spike-in data}
   (McCall \& Irizarry 2008). While ideally someone interested in using
-  this package would read the paper, sections relating specifically to
+  this package would use that paper as a guide, sections relating specifically to
   the \Rpackage{spkTools} package are included here.
 
 \section{SpikeInExpressionSet}
