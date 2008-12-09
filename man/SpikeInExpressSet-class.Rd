@@ -5,6 +5,8 @@
 \alias{SpikeInExpressionSet}
 \alias{SpikeInExpressionSet-methods}
 \alias{initialize,SpikeInExpressionSet-method}
+\alias{spikeIn}
+\alias{spkSplit}
 \alias{spikeIn,SpikeInExpressionSet-method}
 \alias{spikeIn<-,SpikeInExpressionSet,matrix-method}
 \alias{spkSplit,SpikeInExpressionSet-method}
@@ -12,15 +14,15 @@
   Class to Contain and Describe High-Throughput Expression Level Assays
   with Spike-in Data}
 \description{This is a class representation for spike-in expression
-  data. \code{SpikeInExpressionSet} class is dervied from
-  \code{\link{ExpressionSet}}, and requires a matrix names \code{exprs}
+  data. \code{SpikeInExpressionSet} class is derived from
+  \code{ExpressionSet}, and requires a matrix names \code{exprs}
   and a matrix named \code{spikeIn}.}
 \section{Extends}{
-  Extends class \code{\link{ExpressionSet}}.
+  Extends class \code{ExpressionSet}.
   }
 \section{Creating Objects}{
 
-  \code{new("SpikeInExpressionSet")}
+  \code{createSpikeInExpressionSet(exprs, spikeIn, ...)}
 
   \code{new("SpikeInExpressionSet",
     phenoData = new("AnnotatedDataFrame"),
@@ -33,9 +35,9 @@
 
   This creates a \code{SpikeInExpressionSet} with \code{assayData}
   implicitly created to contain \code{exprs} and
-  \code{spikeIn}. Additional named matrix arguements with the same
+  \code{spikeIn}. Additional named matrix arguments with the same
   dimensions as \code{exprs} are added to \code{assayData}; the row
-  and column names of these additional matricies should match those of
+  and column names of these additional matrices should match those of
   \code{exprs} and \code{spikeIn}.
 
   \code{new("SpikeInExpressionSet",
@@ -49,6 +51,7 @@
   This creates a \code{SpikeInExpressionSet} with \code{assayData}
   provided explicitly. In this form, the only required named argument is
   \code{assayData}.
+
 }
     
 \section{Slots}{
@@ -59,10 +62,10 @@
       \code{nrow(phenoData)}. \code{assayData} must contain a matrix
       \code{exprs} and a matrix \code{spikeIn} with rows representing
       features and columns representing samples.}  
-    \item{\code{phenoData}:}{See \code{\link{eSet}}}
-    \item{\code{annotation}}{See \code{\link{eSet}}}
-    \item{\code{featureData}}{See \code{\link{eSet}}}
-    \item{\code{experimentData}:}{See \code{\link{eSet}}} 
+    \item{\code{phenoData}:}{See \code{eSet}}
+    \item{\code{annotation}}{See \code{eSet}}
+    \item{\code{featureData}}{See \code{eSet}}
+    \item{\code{experimentData}:}{See \code{eSet}} 
   }
 }
 
@@ -77,11 +80,11 @@
       probes.}
   }
 
-  For derived methods (see \code{\link{ExpressionSet}}).
+  For derived methods (see \code{ExpressionSet}).
 }
 
 \seealso{
-  \code{\link{eSet-class}}, \code{\link{ExpressionSet-class}}. 
+  \code{eSet-class}, \code{ExpressionSet-class}. 
 } 
 
 \examples{

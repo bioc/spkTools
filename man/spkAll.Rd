@@ -32,8 +32,8 @@ gnn=c(25,100,10000), pch=".", output="eps")
     are "pdf" and "eps"}
 }
 \value{
-  A number of plots and tables are created and saved in the current
-  working directory.
+  The full complement of plots and tables described in the vignette are
+  created and saved in the current working directory.
 }
 \author{Matthew N. McCall}
 \examples{

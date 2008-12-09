@@ -14,7 +14,8 @@ plotSpkBox(boxs, fc=2, box.names=NULL, ...)
   \item{...}{parameters passed to boxplot}
 }
 \value{
-  Boxplots are produced.
+  Boxplots for spike-in and non-spike-in comparisons stratified by
+  ALE strata are produced.
 }
 \author{Matthew N. McCall}
 \examples{

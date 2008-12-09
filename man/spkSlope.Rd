@@ -19,10 +19,10 @@ spkSlope(object, label = NULL, cuts=c(.6,.99), ...)
   The bins are created by computing the proportion of non-spike-in genes
   with expression values less than or equal to the average expression
   value at each nominal concentration. Using the default value of cuts,
-  the high bin contains nominal concentrations with 99 precent or more
+  the high bin contains nominal concentrations with 99 percent or more
   of the non-spike-in expression 
   values lower than it. The medium bin contains nominal concentrations
-  with between 60 and 99 precent of the non-spike-in expression values
+  with between 60 and 99 percent of the non-spike-in expression values
   lower than it. The low bin contains nominal concentrations with less
   than 60 percent of the non-spike-in expression values lower than it.
 }
