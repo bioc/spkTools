@@ -1,8 +1,20 @@
-importFrom(RColorBrewer, brewer.pal)
-importFrom(geneplotter, smoothScatter)
-importFrom(gtools, combinations, permutations)
+importClassesFrom(Biobase, AnnotatedDataFrame, AssayData, eSet,
+                  ExpressionSet, MIAME, Versioned, VersionedBiobase,
+                  Versions)
+importClassesFrom(methods, character, matrix)
+importMethodsFrom(Biobase, annotatedDataFrameFrom, exprs)
 importMethodsFrom(methods, initialize)
-import(Biobase)
+importFrom(Biobase, assayDataElement, assayDataElementReplace,
+           assayDataNew)
+importFrom(graphics, abline, boxplot, legend, par, plot, points, rug,
+           segments, smoothScatter)
+importFrom(grDevices, dev.off, palette, pdf, postscript)
+importFrom(gtools, combinations, permutations)
+importFrom(methods, callNextMethod, new)
+importFrom(RColorBrewer, brewer.pal)
+importFrom(stats, density, df.residual, lm, mad, pnorm, qnorm,
+           quantile, terms.formula)
+importFrom(utils, write.csv)
 
 exportClasses(SpikeInExpressionSet)
 exportMethods(initialize, spikeIn, spkSplit)

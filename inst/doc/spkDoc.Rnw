@@ -1,7 +1,7 @@
 % automatic manuscript creation for spkTools
 % -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
 %\VignetteIndexEntry{spkTools: Spike-in Data Analysis and Visualization}
-%\VignetteDepends{Biobase,RColorBrewer,gtools,geneplotter,xtable}
+%\VignetteDepends{Biobase,RColorBrewer,gtools,xtable}
 %\VignettePackage{spkTools}
 \documentclass[12pt]{article}
 \usepackage{hyperref}
