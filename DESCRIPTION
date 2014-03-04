@@ -1,13 +1,16 @@
 Package: spkTools
-Version: 1.19.1
+Version: 1.19.2
 Date: 2009-07-22
 Title: Methods for Spike-in Arrays
-Author: Matthew N McCall <mmccall@jhsph.edu>, Rafael A Irizarry <rafa@jhu.edu>
+Author: Matthew N McCall <mmccall@jhsph.edu>, Rafael A Irizarry
+        <rafa@jhu.edu>
 Maintainer: Matthew N McCall <mmccall@jhsph.edu>
 Depends: R (>= 2.7.0), Biobase (>= 2.5.5)
 Suggests: xtable
-Imports: Biobase (>= 2.5.5), graphics, grDevices, gtools, methods, RColorBrewer, stats, utils
-Description: The package contains functions that can be used to compare expression measures on different array platforms.
-biocViews: Software, AssayTechnologies, Microarray
+Imports: Biobase (>= 2.5.5), graphics, grDevices, gtools, methods,
+        RColorBrewer, stats, utils
+Description: The package contains functions that can be used to compare
+        expression measures on different array platforms.
 License: GPL (>= 2)
 URL: http://bioconductor.org
+biocViews: Software, Technology, Microarray
