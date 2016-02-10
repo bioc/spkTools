@@ -1,10 +1,10 @@
 Package: spkTools
-Version: 1.27.0
-Date: 2009-07-22
+Version: 1.27.1
+Date: 2016-02-10
 Title: Methods for Spike-in Arrays
-Author: Matthew N McCall <mmccall@jhsph.edu>, Rafael A Irizarry
+Author: Matthew N McCall <mccallm@gmail.com>, Rafael A Irizarry
         <rafa@jhu.edu>
-Maintainer: Matthew N McCall <mmccall@jhsph.edu>
+Maintainer: Matthew N McCall <mccallm@gmail.com>
 Depends: R (>= 2.7.0), Biobase (>= 2.5.5)
 Suggests: xtable
 Imports: Biobase (>= 2.5.5), graphics, grDevices, gtools, methods,

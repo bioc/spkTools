@@ -5,7 +5,7 @@ spkPair <- function(object){
             e <- exprs(s)
             n <- spikeIn(s)
             p <- permutations(n=ncol(n),r=2)
-            mafc <- array(dim=c(nrow(n),nrow(p),4),dimnames=c("probes","arraypairs","M,A,N1,N2"))
+            mafc <- array(dim=c(nrow(n),nrow(p),4),dimnames=list("probes"=rownames(n), "arraypairs"=1:nrow(p),"stats"=c("M","A","N1","N2")))
             for(k in 1:nrow(p)){
               e1 <- e[,p[k,1]]
               e2 <- e[,p[k,2]]
